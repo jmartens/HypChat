@@ -179,7 +179,7 @@ class Room(RestObject):
         if date != 'recent':
             date, tz = mktimestamp(date)
         params = {
-        'date': date,
+        'end-date': date,
         'timezone': tz,
         'max-results': maxResults,
         }
