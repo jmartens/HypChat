@@ -64,8 +64,15 @@ class _requests(Requests):
                 else:
                     raise
             else:
-                self.rl_remaining = int(resp.headers['x-ratelimit-remaining'])
-                self.rl_reset = float(resp.headers['x-ratelimit-reset'])
+                # Apparently this is not present in file downloads and will throw KeyError
+                rl_remaining = resp.headers.get('x-ratelimit-remaining', None)
+                if rl_remaining:
+                    self.rl_remaining = int(rl_remaining)
+
+                rl_reset = resp.headers.get('x-ratelimit-reset', None)
+                if rl_reset:
+                    self.rl_reset = float(rl_reset)
+
                 return resp
 
     def post(self, url, data=None, **kwargs):
